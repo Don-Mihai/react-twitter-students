@@ -1,7 +1,7 @@
 {
   "posts": [
     {
-      "body": "sdgdfgfdg",
+      "body": "aaaa",
       "id": 1
     },
     {
@@ -15,10 +15,17 @@
     {
       "body": "dfgdfgfdgfdg",
       "id": 4
-    },
+    }
+  ],
+  "users": [
     {
-      "body": "dfgfdhggfhgfjghj",
-      "id": 5
+      "id": 1,
+      "f": "Рузвельт",
+      "i": "Теодор",
+      "o": "",
+      "login": "admin",
+      "password": "admin",
+      "birthDate": "00000000"
     }
   ],
   "comments": [],

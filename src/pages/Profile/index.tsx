@@ -7,7 +7,6 @@ const Profile = () => {
     <section className="profile">
       <Navigation/>
       <section className="profile__post">
-        Profile
       </section>
       <aside className="profile__aside">
         aside
