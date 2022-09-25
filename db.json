@@ -2,7 +2,8 @@
   "posts": [
     {
       "body": "aaaa",
-      "id": 1
+      "id": 1,
+      "userId": 1
     },
     {
       "body": "sdgsdgdfgfdg",
@@ -19,13 +20,15 @@
   ],
   "users": [
     {
-      "id": 1,
-      "f": "Рузвельт",
-      "i": "Теодор",
-      "o": "",
+      "name": "Тирион",
+      "phone": "00000000",
+      "month": "Март",
+      "day": "19",
+      "year": "2000",
       "login": "admin",
       "password": "admin",
-      "birthDate": "00000000"
+      "email": "admin@admin.ru",
+      "id": 1
     }
   ],
   "comments": [],

@@ -1,16 +1,25 @@
 import './ModalFormThird.scss';
 import Button from '../../components/Button';
+
 import {useRef, useState} from 'react';
 import React from 'react';
+
+
 import Checkbox from '@mui/material/Checkbox';
 import { pink } from '@mui/material/colors';
 import Link from '@mui/material/Link';
 
-interface ModalFormThirdValues {
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { addUser } from '../../store/user/userSlice';
+
+
+export interface ModalFormThirdValues {
   isChecked: boolean
 }
 
-function ModalFormThird({changeFormsValue,nextStep, onClose}: {changeFormsValue: any, nextStep: any, onClose: any}) {
+interface Props { nextStep: any, onClose: any}
+
+function ModalFormThird({nextStep, onClose}: Props) {
 
   const [inputsValue, setInputsValue] = useState<ModalFormThirdValues>({
     isChecked: false,
@@ -18,18 +27,22 @@ function ModalFormThird({changeFormsValue,nextStep, onClose}: {changeFormsValue:
 
   const inputLogin: any = useRef(null);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const dispatch = useAppDispatch()
+
+  const userInRegister = useAppSelector((state: any) => state.user.userInRegister)
+
+  const handleChange = () => {
     setInputsValue({isChecked: !inputsValue.isChecked})
   }
 
   const onSubmit = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault()
-    console.log(!inputsValue.isChecked)
 
     //Валидация на заполнены ли поля
     if(!inputsValue.isChecked ) {return}
 
-      changeFormsValue(inputsValue)
+
+    dispatch(addUser(userInRegister))
       nextStep()
       onClose()
   }

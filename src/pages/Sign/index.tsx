@@ -5,41 +5,25 @@ import ModalForm from '../../Modules/ModalForm';
 import ModalFormSecond from '../../Modules/ModalFormSecond';
 import ModalFormThird from '../../Modules/ModalFormThird';
 import FooterLink from '../../components/FooterLink';
-//import { Link } from 'react-router-dom';
 import React from 'react';
 import ModalFormGoogle from '../../Modules/ModalFormGoogle';
 import Modal from '../../components/Modal';
 import ModalFormApple from '../../Modules/ModalFormApple';
 import ModalFormRegistr from '../../Modules/ModalFormRegistr';
 
-interface FormsValue {
-  name?: string;
-  phone?: string;
-  month?: string;
-  login?: string;
-}
+
+
 
 var date = new Date().getFullYear();
 
-function Sign(props:any) {
+function Sign() {
   const [openSign, setOpenSign] = useState<boolean>(false);
   const [openGoogle, setOpenGoogle] = useState<boolean>(false);
   const [openApple, setOpenApple] = useState<boolean>(false);
   const [openReg, setOpenReg] = useState<boolean>(false);
   const [activeModal, setActiveModal] = useState<number>(1);
-  const [formsValue, setFormsValue] = useState<FormsValue>({});
   //const divref = useRef(null)
-  console.log(props);
-  
 
-  const handleFormsValue = (value: FormsValue) => {
-    setFormsValue(prev => {
-      return {
-        ...prev,
-        ...value
-      }
-    })
-  }
 
   const toggleModalGoogle = () => {
     setOpenGoogle(prev => !prev)
@@ -57,8 +41,6 @@ function Sign(props:any) {
   const handleClickNextStep = () => {
     setActiveModal((prev: number) => ++prev)
   }
-
-  console.log(formsValue);
   
   return (
     <div className="sign">
@@ -110,9 +92,9 @@ function Sign(props:any) {
               <Button onClick={toggleModalSign} className={'sign__btn-signup btn-component'} text= {'Зарегистрируйтесь с помощью номера телефона или адреса электронной почты'} />
               <Modal open={openSign} toggleModal={toggleModalSign}>
                 <h3 className="modal__step">Шаг {activeModal >= 3 ? '3' : activeModal}  из 3</h3>
-                {activeModal === 1 && <ModalForm changeFormsValue={handleFormsValue} nextStep={handleClickNextStep}/>}
-                {activeModal === 2 && <ModalFormSecond changeFormsValue={handleFormsValue} nextStep={handleClickNextStep}/>}
-                {activeModal === 3 && <ModalFormThird changeFormsValue={handleFormsValue} nextStep={handleClickNextStep} onClose={toggleModalSign}/>}
+                {activeModal === 1 && <ModalForm  nextStep={handleClickNextStep}/>}
+                {activeModal === 2 && <ModalFormSecond nextStep={handleClickNextStep}/>}
+                {activeModal === 3 && <ModalFormThird nextStep={handleClickNextStep} onClose={toggleModalSign}/>}
               </Modal>
               <div className='sign__privacy_wrapp'>
                 Регистрируясь, вы соглашаетесь с

@@ -2,24 +2,33 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 interface UserDto {
-    f: string;
-    i: string;
-    o: string;
+    name: string;
     login: string;
     password: string;
-    birthDate: string;
+    day: string;
+    month: string;
+    year: string;
+    tel: string;
+    email: string;
 }
 
 interface UserProc extends UserDto {}
 
 interface Data {
     isLoading: boolean;
-    user: UserProc
+    user: UserProc;
+    userInRegister: UserProc;
+}
+
+export interface authData {
+    login: string;
+    password: string;
 }
 
 const initialState: Data = {
     isLoading: false,
-    user: {} as UserProc
+    user: {} as UserProc,
+    userInRegister: {} as UserProc,
 };
 
 // запрос для авторизации
@@ -35,46 +44,33 @@ export const fetch = createAsyncThunk(
     }
 );
 
-export const post = createAsyncThunk(
-    'user/postUser', // просто айдишнки, тоесть пишем любое название, но семантичное
-    async (value: object) => {
-        // Здесь только логика запроса и возврата данных
-        // Никакой обработки ошибок
-        await axios.post('http://localhost:3001/posts', value);
+export const addUser = createAsyncThunk(
+    'user/addUser',
+    async (value: UserDto) => {
+        const response = await axios.post(`http://localhost:3001/users`, value);
+        console.log('post')
+        return response.data;
     }
 );
 
-// export const update = createAsyncThunk(
-//     'user/updateUser', // просто айдишнки, тоесть пишем любое название, но семантичное
-//     async (value: CustomPost) => {
-//         // Здесь только логика запроса и возврата данных
-//         // Никакой обработки ошибок
-//         const payload = {
-//             body: value.body
-//         }
-//         const response = await axios.put(`http://localhost:3001/user/${value.id}`, payload);
-//         return response.data;
-//     }
-// );
-
-export const remove = createAsyncThunk(
-    'posts/removeUser', // просто айдишнки, тоесть пишем любое название, но семантичное
-    async (id: number) => {
-        // Здесь только логика запроса и возврата данных
-        // Никакой обработки ошибок
-        await axios.delete(`http://localhost:3001/posts/${id}`);
+export const auth = createAsyncThunk(
+    'user/authUser',
+    async (value: authData) => {
+        const response = await axios.get(`http://localhost:3001/users?login=${value.login}&?password=${value.password}`);
+        console.log('response',response.data)
+        return response.data;
     }
 );
 
 export const UserSlice: any = createSlice({
-    name: 'post',
+    name: 'user',
     initialState,
-    reducers: {},
+    reducers: {
+        addValuesInRegisterUser: (state, action) => {
+            state.userInRegister = {...state.userInRegister, ...action.payload}
+          },
+    },
     extraReducers(builder) {
-        // addCase тут как в качестве then
-        // fullfield это успешное выполнение
-        // pending это ожидание выполнения запроса
-        // rejected это отклоненный запрос
         builder
             .addCase(fetch.fulfilled, (state, action) => {
                 state.user = action.payload;
@@ -85,7 +81,16 @@ export const UserSlice: any = createSlice({
             .addCase(fetch.rejected, (_state, action) => {
                 console.log('Не удалось получить данные.', action.payload);
             })
+            .addCase(addUser.fulfilled, (state, action) => {
+                state.user = action.payload;
+            })
+            .addCase(addUser.rejected, (_state, action) => {
+                console.log('Не удалось получить данные.', action.payload);
+            })
+
     },
 });
+
+export const { addValuesInRegisterUser } = UserSlice.actions;
 
 export default UserSlice.reducer;
