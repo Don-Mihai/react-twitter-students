@@ -1,21 +1,29 @@
 {
   "posts": [
     {
-      "body": "aaaa",
-      "id": 1,
-      "userId": 1
+      "body": "111111",
+      "idUser": 1,
+      "id": 1
     },
     {
-      "body": "sdgsdgdfgfdg",
+      "body": "32423423",
+      "idUser": 1,
       "id": 2
     },
     {
-      "body": "dfgdfgfdgfdg",
+      "body": "121212",
+      "idUser": 1,
       "id": 3
     },
     {
-      "body": "dfgdfgfdgfdg",
+      "body": "aaaaa",
+      "idUser": 2,
       "id": 4
+    },
+    {
+      "body": "asdasd",
+      "idUser": 2,
+      "id": 5
     }
   ],
   "users": [
@@ -29,6 +37,17 @@
       "password": "admin",
       "email": "admin@admin.ru",
       "id": 1
+    },
+    {
+      "name": "Дион",
+      "phone": "999999998",
+      "month": "",
+      "day": "17",
+      "year": "1998",
+      "login": "admin1",
+      "password": "admin1",
+      "email": "admin1@mail.ru",
+      "id": 2
     }
   ],
   "comments": [],

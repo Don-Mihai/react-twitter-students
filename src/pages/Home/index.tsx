@@ -2,23 +2,14 @@ import React, { useEffect, useState } from 'react';
 import Button from '../../components/Button';
 import Navigation from '../../Modules/Navigation';
 import './Home.scss';
-import axios from 'axios';
 import Options from '../../components/Options';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import Aside from '../../Modules/Aside';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import {CustomPost, fetch, post, remove, update} from '../../store/post/postSlice';
-
-interface Post {
-	id: number;
-	userId: number;
-	title: string;
-	body: string
-}
-
-
+import {CustomPost, fetchByUser, post, PostStore, remove, update} from '../../store/post/postSlice';
+import { UserProc, fetch as fetchUser } from '../../store/user/userSlice';
 
 const options = [
 	'Редактировать',
@@ -27,24 +18,29 @@ const options = [
 
 function Home() {
 	const [searchText, setSearchText] = useState('');
-	const [data, setData] = useState<Post[]>([]);
 	const [textPost, setTextPost] = useState<string>('');
 	const [changeMode, setChangeMod] = useState<boolean>(false);
-	const [loading, setLoading] = useState<boolean>(false);
 	const [currentPost, setCurrentPost] = useState<number>();
-	const createPosts: CustomPost[] = useAppSelector((store: any) => store.post.posts)
-	console.log(createPosts)
+	const posts: PostStore = useAppSelector((store: any) => store.post)
+	console.log(posts)
+	const user: UserProc = useAppSelector((store: any) => store.user.user)
+	console.log('user', user)
 
 	const dispatch = useAppDispatch()
+
+	useEffect(() => {
+		dispatch(fetchUser(Number(sessionStorage.getItem('userId'))))
+		fetchPosts()
+	}, [])
 
 
 	const handleClickEdit = (id?: number) => {
 		setChangeMod(true)
 		setCurrentPost(id)
 		// переносит текст поста в инпут
-		createPosts.forEach((post) => {
+		posts.posts.forEach((post) => {
 			if (post.id === id) {
-				setTextPost(post.body)
+				setTextPost(post.body ? post.body : '')
 			}
 		})
 	};
@@ -74,9 +70,11 @@ function Home() {
 	}
 
 	const handleTwit = () => {
-		const payload = {
-			body: textPost
-		}
+		const payload: CustomPost = {
+			body: textPost,
+			idUser: user.id
+		} as CustomPost;
+
 		if (payload.body) {
 			dispatch(post(payload)).then(fetchPosts)
 			setTextPost('')
@@ -86,17 +84,8 @@ function Home() {
 
 
 	const fetchPosts = () => {
-		dispatch(fetch())
+		dispatch(fetchByUser(Number(sessionStorage.getItem('userId'))))
 	}
-
-	useEffect(() => {
-		setLoading(true)
-		axios.get('https://jsonplaceholder.typicode.com/posts').then((res) => {
-			setData(res.data)
-		}).catch(error => console.log(error))
-			.finally(() => setLoading(false))
-		fetchPosts()
-	}, [])
 
 	return (
 		<section className="home">
@@ -115,8 +104,8 @@ function Home() {
 						{changeMode && <Button className={'home__twit'} onClick={handleUpdateTwit} text={'Сохранить'}/>}
 					</div>
 				</section>
-				{loading ? <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}><CircularProgress /></Box> :
-					createPosts.filter(item => item.body.toLowerCase().includes(searchText.toLowerCase())).map(post => {
+				{posts.isLoading ? <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}><CircularProgress /></Box> :
+					posts.posts.filter(item => item.body.toLowerCase().includes(searchText.toLowerCase())).map(post => {
 						return (
 							<div key={post.id} className='home__posts-wrapper'>
 								<Options onClickEdit={handleClickEdit} options={options} id={post.id} onClickDelete={handleClickDelete} />
@@ -124,15 +113,6 @@ function Home() {
 							</div>
 						)
 					}).reverse()}
-				{data && data.filter(item => item.title.toLowerCase().includes(searchText.toLowerCase()) || item.body.toLowerCase().includes(searchText.toLowerCase())).map(post => {
-					return (
-						<div key={post.id} className='home__posts-wrapper'>
-
-							<h2 className='home__posts-title'>{post.title}</h2>
-							<p className='home__posts-body'>{post.body}</p>
-						</div>
-					)
-				})}
 			</section>
 			<Aside handleChange={handleChange} searchText={searchText} />
 		</section>

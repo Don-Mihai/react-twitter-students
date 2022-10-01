@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 interface UserDto {
+    id: number;
     name: string;
     login: string;
     password: string;
@@ -12,7 +13,7 @@ interface UserDto {
     email: string;
 }
 
-interface UserProc extends UserDto {}
+export interface UserProc extends UserDto {}
 
 interface Data {
     isLoading: boolean;
@@ -36,10 +37,10 @@ const initialState: Data = {
 
 export const fetch = createAsyncThunk(
     'user/fetchUser', // просто айдишнки, тоесть пишем любое название, но семантичное
-    async (id) => {
+    async (id: number) => {
         // Здесь только логика запроса и возврата данных
         // Никакой обработки ошибок
-        const response = await axios.get(`http://localhost:3001/users/${id}`);
+        const response = await axios.get(`http://localhost:3001/users?id=${id}`);
         return response.data;
     }
 );
@@ -48,7 +49,6 @@ export const addUser = createAsyncThunk(
     'user/addUser',
     async (value: UserDto) => {
         const response = await axios.post(`http://localhost:3001/users`, value);
-        console.log('post')
         return response.data;
     }
 );
@@ -56,8 +56,7 @@ export const addUser = createAsyncThunk(
 export const auth = createAsyncThunk(
     'user/authUser',
     async (value: authData) => {
-        const response = await axios.get(`http://localhost:3001/users?login=${value.login}&?password=${value.password}`);
-        console.log('response',response.data)
+        const response = await axios.get(`http://localhost:3001/users?login=${value.login}&password=${value.password}`);
         return response.data;
     }
 );
@@ -86,6 +85,11 @@ export const UserSlice: any = createSlice({
             })
             .addCase(addUser.rejected, (_state, action) => {
                 console.log('Не удалось получить данные.', action.payload);
+            })
+            .addCase(auth.fulfilled, (state, action) => {
+                const newObj: UserDto[] = (Array.isArray(action.payload) ? action.payload : [action.payload]) as UserDto[];
+
+                state.user = newObj[0];
             })
 
     },

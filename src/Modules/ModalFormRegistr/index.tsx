@@ -2,8 +2,8 @@ import './ModalFormRegistr.scss';
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import Button from '../../components/Button';
-import { auth, authData } from '../../store/user/userSlice';
-import { useAppDispatch } from '../../hooks/hooks';
+import { auth, authData, UserProc } from '../../store/user/userSlice';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { isEmpty } from 'lodash';
 
 function ModalFormRegistr() {
@@ -17,8 +17,14 @@ function ModalFormRegistr() {
 
   const dispatch = useAppDispatch()
 
+  const user: UserProc = useAppSelector((store: any) => store.user.user)
+
   const validateReg = async() => {
-    return isEmpty((await dispatch(auth(inputsValue))).payload)
+    await dispatch(auth(inputsValue))
+
+    sessionStorage.setItem('userId', `${user.id}`)
+    
+    return isEmpty(user)
   }
 
   const handleChange = (event:any) => {
@@ -35,6 +41,7 @@ function ModalFormRegistr() {
     event.preventDefault()
     //Валидация на заполнены ли поля
     if(await validateReg()) {return}
+
     navigate(`/home`);
   }
 
