@@ -6,6 +6,7 @@ import Sign from './pages/Sign';
 import Home from './pages/Home';
 import React from "react";
 import Profile from "./pages/Profile";
+import Users from "./pages/Users";
 
 const MainRoutes = () => {
   return (
@@ -14,6 +15,7 @@ const MainRoutes = () => {
         <Route path="/" element={<Sign/>}/>
         <Route path="/home" element={<Home/>}/>
         <Route path="/profile" element={<Profile/>}/>
+        <Route path="/users" element={<Users/>}/>
       </Routes>
     </div>
   )

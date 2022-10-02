@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { UserDto} from '../user/userSlice'
 
 export interface CustomPostDto {
 	id: number;
@@ -7,25 +8,45 @@ export interface CustomPostDto {
 	body: string;
 }
 
-export interface CustomPost extends CustomPostDto {}
+export interface CustomPost extends CustomPostDto {
+    name: string;
+    login: string;
+}
 
 export interface PostStore {
     posts: CustomPostDto[];
+    processPosts: CustomPost[]
     isLoading: boolean;
 }
 
 const initialState: PostStore = {
     posts: [],
+    processPosts: [],
     isLoading: false,
 };
 
 export const fetch = createAsyncThunk(
     'posts/fetchPosts', // просто айдишнки, тоесть пишем любое название, но семантичное
     async () => {
-        // Здесь только логика запроса и возврата данных
-        // Никакой обработки ошибок
-        const response = await axios.get('http://localhost:3001/posts');
-        return response.data;
+        
+        
+        const responsePosts = await axios.get('http://localhost:3001/posts');
+        const responseUsers = await axios.get(`http://localhost:3001/users`);
+
+
+
+        const newProcessPosts = await responsePosts.data.map( (item: any) => {
+
+            const findedUser: UserDto | undefined = responseUsers.data.find((user: UserDto) => user.id === item.idUser);
+    
+            return {
+                ...item,
+                name: findedUser?.name ? findedUser.name : '',
+                login: findedUser?.login ? findedUser.login : '',
+            } as CustomPost
+        })
+
+        return newProcessPosts
     }
 );
 
@@ -64,8 +85,7 @@ export const update = createAsyncThunk(
 export const remove = createAsyncThunk(
     'posts/removePosts', // просто айдишнки, тоесть пишем любое название, но семантичное
     async (id: number) => {
-        // Здесь только логика запроса и возврата данных
-        // Никакой обработки ошибок
+    
         await axios.delete(`http://localhost:3001/posts/${id}`);
     }
 );
@@ -81,7 +101,8 @@ export const postSlice: any = createSlice({
         // rejected это отклоненный запрос
         builder
             .addCase(fetch.fulfilled, (state, action) => {
-                state.posts = action.payload;
+                state.processPosts = action.payload;
+                state.isLoading = false;
             })
             .addCase(fetch.pending, state => {
                 state.isLoading = true;

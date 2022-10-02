@@ -8,8 +8,8 @@ import Box from '@mui/material/Box';
 import Aside from '../../Modules/Aside';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import {CustomPost, fetchByUser, post, PostStore, remove, update} from '../../store/post/postSlice';
-import { UserProc, fetch as fetchUser } from '../../store/user/userSlice';
+import {CustomPost, fetch, post, PostStore, remove, update} from '../../store/post/postSlice';
+import { UserProc, fetch as fetchUser, Role } from '../../store/user/userSlice';
 
 const options = [
 	'Редактировать',
@@ -22,9 +22,7 @@ function Home() {
 	const [changeMode, setChangeMod] = useState<boolean>(false);
 	const [currentPost, setCurrentPost] = useState<number>();
 	const posts: PostStore = useAppSelector((store: any) => store.post)
-	console.log(posts)
 	const user: UserProc = useAppSelector((store: any) => store.user.user)
-	console.log('user', user)
 
 	const dispatch = useAppDispatch()
 
@@ -84,9 +82,10 @@ function Home() {
 
 
 	const fetchPosts = () => {
-		dispatch(fetchByUser(Number(sessionStorage.getItem('userId'))))
+		dispatch(fetch())
 	}
 
+	console.log(posts.posts[0], user)
 	return (
 		<section className="home">
 			<Navigation />
@@ -105,11 +104,14 @@ function Home() {
 					</div>
 				</section>
 				{posts.isLoading ? <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}><CircularProgress /></Box> :
-					posts.posts.filter(item => item.body.toLowerCase().includes(searchText.toLowerCase())).map(post => {
+					posts.processPosts.filter(item => item.body.toLowerCase().includes(searchText.toLowerCase())).map(post => {
 						return (
 							<div key={post.id} className='home__posts-wrapper'>
-								<Options onClickEdit={handleClickEdit} options={options} id={post.id} onClickDelete={handleClickDelete} />
-								<p className='home__posts-body'>{post.body}</p>
+								{(user.role === Role.ADMIN || post.idUser === user.id) ? <Options className={'home__posts-option'} onClickEdit={handleClickEdit} options={options} id={post.id} onClickDelete={handleClickDelete} /> : ''}
+								<div className='home__posts-container'>
+									<h3 className='home__posts-title'>{post.name} {post.login}</h3>
+									<p className='home__posts-body'>{post.body}</p>
+								</div>
 							</div>
 						)
 					}).reverse()}

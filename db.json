@@ -36,6 +36,7 @@
       "login": "admin",
       "password": "admin",
       "email": "admin@admin.ru",
+      "role": "ADMIN",
       "id": 1
     },
     {
