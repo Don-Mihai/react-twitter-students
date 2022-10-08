@@ -6,7 +6,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import Aside from '../../Modules/Aside';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { fetch as fetchUser, remove, UserData, fetchUsers as fetch, Role } from '../../store/user/userSlice';
+import { fetch as fetchUser, UserData, fetchUsers as fetch, Role } from '../../store/user/userSlice';
 
 const options = [
 	'Удалить',
@@ -23,7 +23,7 @@ function Users() {
 		fetchUsers()
 	}, [])
 
-	const handleClickDelete = (id: number) => {
+	const handleClickDelete = () => {
 		// ожидается метода удаление постов с бэка после удаление пользователя
 		// dispatch(remove(id)).then(fetchUsers)
 	};

@@ -85,6 +85,15 @@ export const remove = createAsyncThunk(
     }
 );
 
+export const update = createAsyncThunk(
+    'user/updateUser', // просто айдишнки, тоесть пишем любое название, но семантичное
+    async (value: UserDto) => {
+    
+        const response = await axios.put(`http://localhost:3001/users/${value.id}`, value);
+        return response.data;
+    }
+);
+
 export const UserSlice: any = createSlice({
     name: 'user',
     initialState,
@@ -120,6 +129,10 @@ export const UserSlice: any = createSlice({
                 console.log('Не удалось получить данные.', action.payload);
             })
             .addCase(auth.fulfilled, (state, action) => {
+                const newObj: UserDto[] = (Array.isArray(action.payload) ? action.payload : [action.payload]) as UserDto[];
+                state.user = newObj[0];
+            })
+            .addCase(update.fulfilled, (state, action) => {
                 const newObj: UserDto[] = (Array.isArray(action.payload) ? action.payload : [action.payload]) as UserDto[];
                 state.user = newObj[0];
             })
