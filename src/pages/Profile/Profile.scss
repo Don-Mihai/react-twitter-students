@@ -4,11 +4,17 @@ $avatar-size: 120px;
 $background-height: 250px;
 
 .profile {
+  width: 98vw;
   display: flex;
   justify-content: center;
   position: relative;
   color: white;
 	background-color: #000;
+
+  &__top {
+    display: flex;
+    justify-content: space-between;
+  }
 
   &__title {
     margin-left: 20px;
@@ -23,6 +29,9 @@ $background-height: 250px;
   }
 
   &__background {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: relative;
     height: $background-height;
     margin-bottom: $avatar-size/2;
@@ -32,7 +41,7 @@ $background-height: 250px;
   &__avatar-wrap {
     position: absolute;
     top: $background-height - $avatar-size/2;
-    margin-left: 20px;
+    left: 20px;
   }
 
   &__main {

@@ -37,7 +37,8 @@
       "password": "admin",
       "email": "admin@admin.ru",
       "role": "ADMIN",
-      "id": 1
+      "id": 1,
+      "userBackground": "https://wallpaperaccess.com/full/16677.jpg"
     },
     {
       "name": "Дионнн",

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './InputEdit.scss';
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
@@ -12,8 +12,12 @@ interface Props {
 }
 
 function InputEdit({ className, value, fontSize, onSave }: Props) {
-    const [inputText, setInputText] = useState<string>(value ? value : '');
+    const [inputText, setInputText] = useState<string>('');
     const [isEdit, setIsEdit] = useState<boolean>(false);
+
+    useEffect(() => {
+        setInputText(value ? value : '')
+    }, [value])
 
     const handleChange = (e: any) => {
         setInputText(e.target.value);
