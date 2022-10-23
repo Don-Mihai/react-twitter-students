@@ -18,4 +18,4 @@ function Aside({handleChange, searchText} : Props) {
   );
 }
 
-export default Aside;
+export default React.memo(Aside);

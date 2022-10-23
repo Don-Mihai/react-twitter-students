@@ -1,6 +1,6 @@
 import './Sign.scss';
 import Button from '../../components/Button';
-import { useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import ModalForm from '../../Modules/ModalForm';
 import ModalFormSecond from '../../Modules/ModalFormSecond';
 import ModalFormThird from '../../Modules/ModalFormThird';
@@ -25,18 +25,18 @@ function Sign() {
   //const divref = useRef(null)
 
 
-  const toggleModalGoogle = () => {
+  const toggleModalGoogle = useCallback(() => {
     setOpenGoogle(prev => !prev)
-  }
-  const toggleModalApple = () => {
+  }, [])
+  const toggleModalApple = useCallback(() => {
     setOpenApple(prev => !prev)
-  } 
-  const toggleModalSign = () => {
+  }, [])
+  const toggleModalSign = useCallback(() => {
     setOpenSign(prev => !prev)
-  }
-  const toggleModalReg = () => {
+  }, [])
+  const toggleModalReg = useCallback(() => {
     setOpenReg(prev => !prev)
-  }
+  }, [])
   
   const handleClickNextStep = () => {
     setActiveModal((prev: number) => ++prev)
@@ -70,11 +70,11 @@ function Sign() {
             <h2 className='sign__title'>В курсе происходящего</h2>
             <h3 className='sign__title-second'>Присоединяйтесь к Твиттеру прямо сейчас!</h3>
             <div className='sign__btn-wrapper'>
-              <Button onClick={toggleModalGoogle} text={'Регистрация с помощью Google'} icon={<img src="/google.svg" width={20} alt="иконка"></img>} />
+              <Button onClick={toggleModalGoogle} text={'Регистрация с помощью Google'} icon={useMemo(() => <img src="/google.svg" width={20} alt="иконка"></img>, [])} />
               <Modal open={openGoogle} toggleModal={toggleModalGoogle}>
                 <ModalFormGoogle onClose={toggleModalGoogle}/>
               </Modal>
-              <Button onClick={toggleModalApple} text={'Зарегестрироваться с помощью учетной записью Apple'} icon={<img src="/apple.svg" width={20} alt="иконка"></img>} />
+              <Button onClick={toggleModalApple} text={'Зарегестрироваться с помощью учетной записью Apple'} icon={useMemo(() => <img src="/apple.svg" width={20} alt="иконка"></img>, [])} />
               <Modal open={openApple} toggleModal={toggleModalApple}>
                   <ModalFormApple onClose={toggleModalApple}/>
               </Modal>

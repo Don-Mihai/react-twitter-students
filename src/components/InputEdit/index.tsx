@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import './InputEdit.scss';
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
@@ -32,6 +32,14 @@ function InputEdit({ className, value, fontSize, onSave }: Props) {
       setIsEdit(false);
     };
 
+    const EditBtnMemo = useMemo(() => {
+        return (
+            <IconButton onClick={handleClickEdit}>
+                <EditIcon color="primary" sx={{ cursor: 'pointer' }} />
+            </IconButton>
+        )
+    }, [])
+
     return (
         <div className={`input-edit-component ${className ? className : ''}`}>
             {isEdit ? (
@@ -44,9 +52,7 @@ function InputEdit({ className, value, fontSize, onSave }: Props) {
             ) : (
                 <h3 style={{ height: fontSize ? fontSize : '36px', fontSize: fontSize ? fontSize : '36px' }}>{inputText}</h3>
             )}
-            <IconButton onClick={handleClickEdit}>
-                <EditIcon color="primary" sx={{ cursor: 'pointer' }} />
-            </IconButton>
+            {EditBtnMemo}
             {isEdit && (
                 <IconButton onClick={handleCLickSave}>
                     <DoneOutlineIcon color="success" sx={{ cursor: 'pointer' }} />

@@ -16,4 +16,4 @@ function Search({handleChange, searchText} : Props) {
   );
 }
 
-export default Search;
+export default React.memo(Search);

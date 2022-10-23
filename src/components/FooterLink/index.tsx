@@ -10,6 +10,7 @@ function FooterLink() {
   
 
   const listItem = footerTitleElem.map((item,index) =>  <Link key={`${index}_${item}`} to='!#' className="sign__footer-link"> { item } </Link> )
+
   return (
     <>
       {listItem}
@@ -18,4 +19,4 @@ function FooterLink() {
   );
 }
 
-export default FooterLink;
+export default React.memo(FooterLink);

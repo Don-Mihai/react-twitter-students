@@ -18,4 +18,4 @@ function Button({text, icon, className, onClick, id}: Props) {
   );
 }
 
-export default Button;
+export default React.memo(Button);

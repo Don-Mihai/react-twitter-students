@@ -73,4 +73,4 @@ function Options({ onClickEdit, onClickDelete, options, id, className }: Props) 
     );
 }
 
-export default Options;
+export default React.memo(Options);

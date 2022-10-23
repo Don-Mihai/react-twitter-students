@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import Button from '../../components/Button';
 import Navigation from '../../Modules/Navigation';
 import './Home.scss';
@@ -11,10 +11,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import {CustomPost, fetch, post, PostStore, remove, update} from '../../store/post/postSlice';
 import { UserProc, fetch as fetchUser, Role } from '../../store/user/userSlice';
 
-const options = [
-	'Редактировать',
-	'Удалить',
-];
+
 
 function Home() {
 	const [searchText, setSearchText] = useState('');
@@ -31,8 +28,13 @@ function Home() {
 		fetchPosts()
 	}, [])
 
+	const options = useMemo(() =>[
+		'Редактировать',
+		'Удалить',
+	],[])
 
-	const handleClickEdit = (id?: number) => {
+
+	const handleClickEdit = useCallback((id?: number) => {
 		setChangeMod(true)
 		setCurrentPost(id)
 		// переносит текст поста в инпут
@@ -41,7 +43,7 @@ function Home() {
 				setTextPost(post.body ? post.body : '')
 			}
 		})
-	};
+	}, [posts])
 
 	const handleUpdateTwit = () => {
 		const payload = {
@@ -55,13 +57,13 @@ function Home() {
 		}
 	}
 
-	const handleClickDelete = (id: number) => {
+	const handleClickDelete = useCallback((id: number) => {
 		dispatch(remove(id)).then(fetchPosts)
-	};
+	}, [])
 	
-	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const handleChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
 		setSearchText(event.target.value)
-	}
+	}, [])
 
 	const handlePostsChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
 		setTextPost(event.target.value)

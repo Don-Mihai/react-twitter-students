@@ -1,5 +1,5 @@
 import Avatar from '@mui/material/Avatar';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import InputEdit from '../../components/InputEdit';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import Navigation from '../../Modules/Navigation';
@@ -33,13 +33,13 @@ const Profile = () => {
       dispatch(fetchUser(Number(sessionStorage.getItem('userId'))))
     }, [])
 
-    const updateName = (newValue: string) => {
+    const updateName = useCallback((newValue: string) => {
         const payload = {
             ...user,
             name: newValue,
         };
         dispatch(update(payload));
-    };
+    },[user])
 
     const handleClickOpenLogout = () => {
         setIsOpen(true);
@@ -77,6 +77,8 @@ const Profile = () => {
 
       setIsOpenUrl(false)
     }
+
+    const AvatarMemo = useMemo(() => <Avatar alt="avatar" src={''} sx={{ width: 120, height: 120 }} />, [])
 
     return (
         <section className="profile">
@@ -119,7 +121,7 @@ const Profile = () => {
                         </DialogActions>
                     </Dialog>
                     <div className="profile__avatar-wrap" onClick={onChangeAvatar}>
-                        <Avatar alt="avatar" src={''} sx={{ width: 120, height: 120 }} />
+                        {AvatarMemo}
                     </div>
                 </div>
                 <InputEdit value={user.name} onSave={updateName} />

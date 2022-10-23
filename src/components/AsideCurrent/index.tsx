@@ -24,4 +24,4 @@ function AsideCurrent() {
   );
 }
 
-export default AsideCurrent;
+export default React.memo(AsideCurrent);
