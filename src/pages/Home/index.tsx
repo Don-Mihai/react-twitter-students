@@ -8,8 +8,9 @@ import Box from '@mui/material/Box';
 import Aside from '../../Modules/Aside';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import {CustomPost, fetch, post, PostStore, remove, update} from '../../store/post/postSlice';
+import {CustomPost, fetch, post, PostStore, remove, update, uploadImg} from '../../store/post/postSlice';
 import { UserProc, fetch as fetchUser, Role } from '../../store/user/userSlice';
+import UploadIcon from '@mui/icons-material/Upload';
 
 
 
@@ -18,8 +19,10 @@ function Home() {
 	const [textPost, setTextPost] = useState<string>('');
 	const [changeMode, setChangeMod] = useState<boolean>(false);
 	const [currentPost, setCurrentPost] = useState<number>();
+	const [file, setFile] = useState<Blob | null>(null);
 	const posts: PostStore = useAppSelector((store: any) => store.post)
 	const user: UserProc = useAppSelector((store: any) => store.user.user)
+	const [drag, setDrag] = useState<boolean>(false)
 
 	const dispatch = useAppDispatch()
 
@@ -72,7 +75,8 @@ function Home() {
 	const handleTwit = () => {
 		const payload: CustomPost = {
 			body: textPost,
-			idUser: user.id
+			idUser: user.id,
+			img: file,
 		} as CustomPost;
 
 		if (payload.body) {
@@ -87,7 +91,27 @@ function Home() {
 		dispatch(fetch())
 	}
 
-	console.log(posts.posts[0], user)
+	const handleFileChange = (e) => {
+		// setFile(e.target.files[0])
+		dispatch(uploadImg(e.target.files[0]))
+		setDrag(false);
+	}
+
+	const dragDropHandler = (evt) => {
+		evt.preventDefault();
+		setDrag(false);
+	}
+	const dragLeaveHandler = (evt) => {
+		evt.preventDefault();
+		setDrag(false);
+	}
+
+	const dragOverHandler = (evt) => {
+		evt.preventDefault();
+		setDrag(true);
+	}
+
+	console.log(drag)
 	return (
 		<section className="home">
 			<Navigation />
@@ -97,8 +121,16 @@ function Home() {
 					<div className="status__img-wrapper">
 						<AccountCircleIcon className='status__img-avatar'/>
 					</div>
-					<div className="status__input">
+					<div className="status__input" onDragOver={dragOverHandler} >
 						<textarea className='status__input-textArea' rows={2} cols={49} value={textPost} onChange={handlePostsChange} placeholder='Что происходит?'> </textarea>
+						
+
+						{drag &&<input className='upload-input' style={{zIndex: drag ? 10 : 0}} type="file" onChange={handleFileChange} name="" id=""/>}
+
+						{drag && <div className={drag ? 'dropzone' : ''} onDragLeave={dragLeaveHandler} onDrop={dragDropHandler} >
+							<UploadIcon color='primary'/>
+						</div>}
+						
 					</div>
 					<div className="status__icon">
 						{!changeMode && <Button className={'home__twit'} onClick={handleTwit} text={'Твитнуть'}/>}

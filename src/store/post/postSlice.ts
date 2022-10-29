@@ -6,6 +6,7 @@ export interface CustomPostDto {
 	id: number;
 	idUser: number;
 	body: string;
+    img: Blob;
 }
 
 export interface CustomPost extends CustomPostDto {
@@ -32,8 +33,6 @@ export const fetch = createAsyncThunk(
         
         const responsePosts = await axios.get('http://localhost:3001/posts');
         const responseUsers = await axios.get(`http://localhost:3001/users`);
-
-
 
         const newProcessPosts = await responsePosts.data.map( (item: any) => {
 
@@ -65,6 +64,7 @@ export const post = createAsyncThunk(
     async (value: object) => {
         // Здесь только логика запроса и возврата данных
         // Никакой обработки ошибок
+        console.log(value.img)
         await axios.post('http://localhost:3001/posts', value);
     }
 );
@@ -87,6 +87,27 @@ export const remove = createAsyncThunk(
     async (id: number) => {
     
         await axios.delete(`http://localhost:3001/posts/${id}`);
+    }
+);
+
+export const uploadImg = createAsyncThunk(
+    'posts/uploadImg', 
+    async (file: Blob) => {
+        const formData = new FormData();
+
+        formData.append('file', file)
+
+        console.log(formData)
+
+        const config = {
+            headers:{
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'multipart/form-data',
+            },
+            'Access-Control-Allow-Origin': '*',
+          };
+        
+        await axios.post('http://localhost:3002', formData, config);
     }
 );
 
