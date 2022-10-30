@@ -26,7 +26,7 @@ const initialState: PostStore = {
     isLoading: false,
 };
 
-export const fetch = createAsyncThunk(
+export const fetchPosts = createAsyncThunk(
     'posts/fetchPosts', // просто айдишнки, тоесть пишем любое название, но семантичное
     async () => {
         
@@ -64,7 +64,6 @@ export const post = createAsyncThunk(
     async (value: object) => {
         // Здесь только логика запроса и возврата данных
         // Никакой обработки ошибок
-        console.log(value.img)
         await axios.post('http://localhost:3001/posts', value);
     }
 );
@@ -98,16 +97,11 @@ export const uploadImg = createAsyncThunk(
         formData.append('file', file)
 
         console.log(formData)
-
-        const config = {
-            headers:{
-                'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'multipart/form-data',
-            },
-            'Access-Control-Allow-Origin': '*',
-          };
-        
-        await axios.post('http://localhost:3002', formData, config);
+         
+        fetch('http://localhost:5000/upload-img', {
+            method: 'POST',
+            body: formData
+        })
     }
 );
 
@@ -121,14 +115,14 @@ export const postSlice: any = createSlice({
         // pending это ожидание выполнения запроса
         // rejected это отклоненный запрос
         builder
-            .addCase(fetch.fulfilled, (state, action) => {
+            .addCase(fetchPosts.fulfilled, (state, action) => {
                 state.processPosts = action.payload;
                 state.isLoading = false;
             })
-            .addCase(fetch.pending, state => {
+            .addCase(fetchPosts.pending, state => {
                 state.isLoading = true;
             })
-            .addCase(fetch.rejected, (_state, action) => {
+            .addCase(fetchPosts.rejected, (_state, action) => {
                 console.log('Не удалось получить данные.', action.payload);
             })
             .addCase(fetchByUser.fulfilled, (state, action) => {

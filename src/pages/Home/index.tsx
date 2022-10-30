@@ -8,7 +8,7 @@ import Box from '@mui/material/Box';
 import Aside from '../../Modules/Aside';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import {CustomPost, fetch, post, PostStore, remove, update, uploadImg} from '../../store/post/postSlice';
+import {CustomPost, fetchPosts as fetch, post, PostStore, remove, update, uploadImg} from '../../store/post/postSlice';
 import { UserProc, fetch as fetchUser, Role } from '../../store/user/userSlice';
 import UploadIcon from '@mui/icons-material/Upload';
 
@@ -91,27 +91,26 @@ function Home() {
 		dispatch(fetch())
 	}
 
-	const handleFileChange = (e) => {
+	const handleFileChange = (e: any) => {
 		// setFile(e.target.files[0])
-		dispatch(uploadImg(e.target.files[0]))
+		dispatch(uploadImg(e.target.files[0]));
 		setDrag(false);
 	}
 
-	const dragDropHandler = (evt) => {
+	const dragDropHandler = (evt: any) => {
 		evt.preventDefault();
 		setDrag(false);
 	}
-	const dragLeaveHandler = (evt) => {
+	const dragLeaveHandler = (evt: any) => {
 		evt.preventDefault();
 		setDrag(false);
 	}
 
-	const dragOverHandler = (evt) => {
+	const dragOverHandler = (evt: any) => {
 		evt.preventDefault();
 		setDrag(true);
 	}
 
-	console.log(drag)
 	return (
 		<section className="home">
 			<Navigation />
