@@ -4,7 +4,6 @@ import Button from "../../components/Button";
 import NavLink from "../../components/NavLink";
 import './Navigation.scss';
 import HomeIcon from '@mui/icons-material/Home';
-import SearchIcon from '@mui/icons-material/Search';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import BookmarksIcon from '@mui/icons-material/Bookmarks';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
@@ -29,10 +28,6 @@ const Navigation = () => {
           <div className="nav-list__link">
               <HomeIcon />
               <NavLink url={'/home'} text={'Главная'} />
-          </div>
-          <div className="nav-list__link">
-              <SearchIcon />
-              <NavLink url={'/search'} text={'Поиск'} />
           </div>
           {!user?.role && (
               <div className="nav-list__link">

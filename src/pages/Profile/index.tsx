@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import InputEdit from '../../components/InputEdit';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import Navigation from '../../Modules/Navigation';
-import { UserProc, update, fetch as fetchUser, uploadImg } from '../../store/user/userSlice';
+import { UserProc, update, fetch as fetchUser, uploadImg, clearData } from '../../store/user/userSlice';
 import './Profile.scss';
 import LogoutIcon from '@mui/icons-material/Logout';
 import IconButton from '@mui/material/IconButton';
@@ -45,6 +45,8 @@ const Profile = () => {
 
     const handleClickLogout = () => {
         sessionStorage.clear();
+
+        dispatch(clearData())
 
         navigate('/');
     };

@@ -19,6 +19,7 @@ export interface UserDto {
     role?: Role;
     imgUrl?: string;
     backgroundUrl?: string;
+    lickedPosts?: number[];
 }
 
 export interface UserProc extends UserDto {}
@@ -119,6 +120,9 @@ export const UserSlice: any = createSlice({
         addValuesInRegisterUser: (state, action) => {
             state.userInRegister = {...state.userInRegister, ...action.payload}
           },
+        clearData: (state, _) => {
+            state.user = {} as UserProc
+        }
     },
     extraReducers(builder) {
         builder
@@ -158,6 +162,6 @@ export const UserSlice: any = createSlice({
     },
 });
 
-export const { addValuesInRegisterUser } = UserSlice.actions;
+export const { addValuesInRegisterUser, clearData } = UserSlice.actions;
 
 export default UserSlice.reducer;

@@ -12,6 +12,8 @@ import { UserProc, fetch as fetchUser, Role } from '../../store/user/userSlice';
 import UploadIcon from '@mui/icons-material/Upload';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import Avatar from '@mui/material/Avatar';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 
 
@@ -200,6 +202,7 @@ function Home() {
                                         <p className="home__posts-body">{post.body}</p>
                                         {post?.imgUrl && <img className="home__posts-img" src={`http://localhost:5000/${post?.imgUrl}`} alt="" />}
                                     </div>
+									{user?.lickedPosts?.find((id) => id === post.id) ? <FavoriteIcon /> : <FavoriteBorderIcon /> }
                                 </div>
                             );
                         })

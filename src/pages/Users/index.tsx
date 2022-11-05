@@ -7,6 +7,7 @@ import Box from '@mui/material/Box';
 import Aside from '../../Modules/Aside';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { fetch as fetchUser, UserData, fetchUsers as fetch, Role } from '../../store/user/userSlice';
+import Avatar from '@mui/material/Avatar';
 
 const options = [
 	'Удалить',
@@ -47,9 +48,14 @@ function Users() {
 					user.users.filter(item => item.name.toLowerCase().includes(searchText.toLowerCase())).map(userItem => {
 						return (
 							<div key={userItem.id} className='users__posts-wrapper'>
-								<div className='users__posts-container'>
-									<h3 className='users__posts-title'>{userItem.name} {userItem.login}</h3>
+								<div style={{display: 'flex', alignItems: 'center', gap: '8px'}}>
+								<Avatar alt="avatar" src={`http://localhost:5000/${userItem?.imgUrl}`} sx={{ width: 40, height: 40 }} />
+                                            
+											<div className='users__posts-container'>
+												<h3 className='users__posts-title'>{userItem.name} {userItem.login}</h3>
+											</div>
 								</div>
+								
 								{userItem?.role !== Role.ADMIN &&  <Options className={'users__posts-option'} options={options} id={userItem.id} onClickDelete={handleClickDelete} />}
 							</div>
 						)
