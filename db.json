@@ -16,16 +16,6 @@
       "id": 3
     },
     {
-      "body": "aaaaa",
-      "idUser": 2,
-      "id": 4
-    },
-    {
-      "body": "asdasd",
-      "idUser": 2,
-      "id": 5
-    },
-    {
       "body": "qwerty",
       "idUser": 2,
       "img": {},
@@ -36,6 +26,40 @@
       "idUser": 2,
       "img": {},
       "id": 7
+    },
+    {
+      "body": "111111111111",
+      "idUser": 2,
+      "imgUrl": "/1667122638426-by-isaac-yeram-kim-samurai-samurai-so-spiny-vorota-torii-pli.jpg",
+      "id": 8
+    },
+    {
+      "body": "qqqqq",
+      "idUser": 2,
+      "id": 9
+    },
+    {
+      "body": "eeee",
+      "idUser": 2,
+      "id": 10
+    },
+    {
+      "body": "tt",
+      "idUser": 2,
+      "imgUrl": "/1667123191209-117684-arhitektura-muzyka-atmosfera-metropoliya-illustracia-1920x1080.jpg",
+      "id": 11
+    },
+    {
+      "body": "yyy",
+      "idUser": 2,
+      "imgUrl": "/1667123199344-by-isaac-yeram-kim-samurai-samurai-so-spiny-vorota-torii-pli.jpg",
+      "id": 12
+    },
+    {
+      "body": "test",
+      "idUser": 2,
+      "imgUrl": "/1667126178679-by-isaac-yeram-kim-samurai-samurai-so-spiny-vorota-torii-pli.jpg",
+      "id": 13
     }
   ],
   "users": [

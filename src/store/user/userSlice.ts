@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { ImgDto } from '../post/postSlice';
 
 export const enum Role {
     ADMIN = 'ADMIN',
@@ -17,6 +18,7 @@ export interface UserDto {
     email: string;
     role?: Role;
     userBackground?: string;
+    imgUrl?: string;
 }
 
 export interface UserProc extends UserDto {}
@@ -94,6 +96,21 @@ export const update = createAsyncThunk(
         return response.data;
     }
 );
+
+export const uploadImg = createAsyncThunk('user/uploadImg', async (file: Blob | null): Promise<ImgDto> => {
+    const formData = new FormData();
+
+    if (file) {
+        formData.append('file', file);
+
+        console.log(formData);
+
+        const data = await axios.post('http://localhost:5000/upload-img', formData);
+        return data.data as ImgDto
+    } else {
+        return {} as ImgDto
+    }
+});
 
 export const UserSlice: any = createSlice({
     name: 'user',

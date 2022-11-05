@@ -18,6 +18,8 @@ app.use(
     })
 );
 
+app.use(express.static(__dirname + "/public"));
+
 app.post('/upload-img', (req, res) => {
     if (!req.files) {
         return res.status(400).json({ message: 'Нет загруженных изображений' });
@@ -39,7 +41,7 @@ app.post('/upload-img', (req, res) => {
 
         res.json({
             fileName: file.name,
-            filePath: `/public/${newFileName}`,
+            filePath: `/${newFileName}`,
         });
     });
 });

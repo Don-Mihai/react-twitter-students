@@ -6,12 +6,13 @@ export interface CustomPostDto {
 	id: number;
 	idUser: number;
 	body: string;
-    img: Blob;
+    imgUrl: string;
 }
 
 export interface CustomPost extends CustomPostDto {
     name: string;
     login: string;
+    avatarUrl: string;
 }
 
 export interface PostStore {
@@ -20,6 +21,10 @@ export interface PostStore {
     isLoading: boolean;
 }
 
+export interface ImgDto {
+    fileName: string;
+    filePath: string;
+}
 const initialState: PostStore = {
     posts: [],
     processPosts: [],
@@ -42,6 +47,7 @@ export const fetchPosts = createAsyncThunk(
                 ...item,
                 name: findedUser?.name ? findedUser.name : '',
                 login: findedUser?.login ? findedUser.login : '',
+                avatarUrl: findedUser?.imgUrl ? findedUser.imgUrl : '',
             } as CustomPost
         })
 
@@ -89,21 +95,20 @@ export const remove = createAsyncThunk(
     }
 );
 
-export const uploadImg = createAsyncThunk(
-    'posts/uploadImg', 
-    async (file: Blob) => {
-        const formData = new FormData();
+export const uploadImg = createAsyncThunk('posts/uploadImg', async (file: Blob | null): Promise<ImgDto> => {
+    const formData = new FormData();
 
-        formData.append('file', file)
+    if (file) {
+        formData.append('file', file);
 
-        console.log(formData)
-         
-        fetch('http://localhost:5000/upload-img', {
-            method: 'POST',
-            body: formData
-        })
+        console.log(formData);
+
+        const data = await axios.post('http://localhost:5000/upload-img', formData);
+        return data.data as ImgDto
+    } else {
+        return {} as ImgDto
     }
-);
+});
 
 export const postSlice: any = createSlice({
     name: 'post',
