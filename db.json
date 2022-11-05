@@ -74,7 +74,9 @@
       "email": "admin@admin.ru",
       "role": "ADMIN",
       "id": 1,
-      "userBackground": "https://wallpaperaccess.com/full/16677.jpg"
+      "userBackground": "https://wallpaperaccess.com/full/16677.jpg",
+      "imgUrl": "/1667641623144-300px-Samurai_with_sword.jpg",
+      "backgroundUrl": "/1667641634536-028.jpg"
     },
     {
       "name": "Дионнv",
@@ -86,7 +88,9 @@
       "password": "admin1",
       "email": "admin1@mail.ru",
       "id": 2,
-      "imgUrl": "/1667638296660-117684-arhitektura-muzyka-atmosfera-metropoliya-illustracia-1920x1080.jpg"
+      "imgUrl": "/1667639809611-base_87716f252d.jpg",
+      "userBackground": "",
+      "backgroundUrl": "/1667641097302-117684-arhitektura-muzyka-atmosfera-metropoliya-illustracia-1920x1080.jpg"
     }
   ],
   "comments": [],

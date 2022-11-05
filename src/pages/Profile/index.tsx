@@ -16,7 +16,6 @@ import Button from '@mui/material/Button';
 import EditIcon from '@mui/icons-material/Edit';
 
 import { useNavigate } from 'react-router-dom';
-import TextField from '@mui/material/TextField';
 
 const Profile = () => {
     const dispatch = useAppDispatch();
@@ -24,7 +23,6 @@ const Profile = () => {
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [isOpenUrl, setIsOpenUrl] = useState<boolean>(false);
-    const [inputTextUrl, setInputTextUrl] = useState<string>('')
 
     const user: UserProc = useAppSelector((store: any) => store.user.user);
     const onChangeAvatar = () => {};
@@ -63,27 +61,12 @@ const Profile = () => {
       setIsOpenUrl(true)
     }
 
-    const handleInputUrlChange = (e: any) => {
-      setInputTextUrl(e.target.value)
-    }
-
-    const handleInputUrlSubmit = () => {
-      const payload: UserProc = {
-        ...user,
-        userBackground: inputTextUrl
-      }
-
-      dispatch(update(payload))
-
-      setIsOpenUrl(false)
-    }
-
-    const handleFileChange = async (e: any) => {
+    const handleImgChange = async (e: any) => {
         const imgData: any = await dispatch(uploadImg(e.target.files[0]))
 
         const payload: UserProc = {
             ...user,
-			imgUrl: imgData.payload.filePath,
+			[e.target.id]: imgData.payload.filePath,
 		} as UserProc;
 
         dispatch(update(payload));
@@ -93,7 +76,15 @@ const Profile = () => {
         return(
             <>
                 <Avatar alt="avatar" src={`http://localhost:5000/${user?.imgUrl}`} sx={{ width: 120, height: 120, cursor: 'pointer' }} />
-                <input className="upload-input"  type="file" onChange={handleFileChange} />
+                <input className="upload-input" id='imgUrl'  type="file" onChange={handleImgChange} />
+            </>
+        )
+    }, [user])
+
+    const BackgroundrMemo = useMemo(() => {
+        return(
+            <>
+                <img className='profile__background-img' src={`http://localhost:5000/${user?.backgroundUrl}`} alt="" />
             </>
         )
     }, [user])
@@ -121,27 +112,29 @@ const Profile = () => {
                     </Dialog>
                 </div>
 
-                <div className="profile__background" style={{backgroundImage: `url(${user?.userBackground ? user?.userBackground : ''})`}}>
+                <div className="profile__background">
+                    {BackgroundrMemo}
                     <IconButton onClick={handleOpenUrl} color="primary">
                         <EditIcon />
                     </IconButton>
                     <Dialog open={isOpenUrl} onClose={handleCloseUrl}>
-                        <DialogTitle>Subscribe</DialogTitle>
-                        <DialogContent>
-                            <DialogContentText>
-                                Вставьте адрес картинки (url)
-                            </DialogContentText>
-                            <TextField value={inputTextUrl} onChange={handleInputUrlChange} autoFocus margin="dense" id="name" label="Img url" type="text" fullWidth variant="standard" />
-                        </DialogContent>
+                        <DialogTitle>Фоновое изображение</DialogTitle>
+
                         <DialogActions>
-                            <Button onClick={handleClose}>Отменить</Button>
-                            <Button onClick={handleInputUrlSubmit}>Изменить фоновое изображение</Button>
+                            <Button onClick={handleCloseUrl}>Отменить</Button>
+                            <Button onClick={() => {}}>
+                                Выбрать изображение
+                                <input className="upload-input" id='backgroundUrl' type="file" onChange={handleImgChange} />
+                            </Button>
                         </DialogActions>
                     </Dialog>
-                    <div className="profile__avatar-wrap" onClick={onChangeAvatar}>
-                        {AvatarMemo}
-                    </div>
+                    
                 </div>
+
+                <div className="profile__avatar-wrap" onClick={onChangeAvatar}>
+                    {AvatarMemo}
+                </div>
+
                 <InputEdit value={user.name} onSave={updateName} />
                 <h3 className="profile__email">{user.email}</h3>
             </section>

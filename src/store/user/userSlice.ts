@@ -17,8 +17,8 @@ export interface UserDto {
     tel: string;
     email: string;
     role?: Role;
-    userBackground?: string;
     imgUrl?: string;
+    backgroundUrl?: string;
 }
 
 export interface UserProc extends UserDto {}

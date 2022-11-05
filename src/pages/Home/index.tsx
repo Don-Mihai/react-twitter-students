@@ -6,7 +6,6 @@ import Options from '../../components/Options';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import Aside from '../../Modules/Aside';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import {CustomPost, fetchPosts as fetch, post, PostStore, remove, update, uploadImg} from '../../store/post/postSlice';
 import { UserProc, fetch as fetchUser, Role } from '../../store/user/userSlice';
@@ -120,6 +119,14 @@ function Home() {
 		setDrag(true);
 	}
 
+	const AvatarMemo = useMemo(() => {
+        return(
+            <>
+                <Avatar alt="avatar" src={`http://localhost:5000/${user?.imgUrl}`} sx={{ width: 60, height: 60 }} />
+            </>
+        )
+    }, [user])
+
 	return (
         <section className="home">
             <Navigation />
@@ -127,7 +134,7 @@ function Home() {
                 <section className="status">
                     <h2 className="status-title">Главная</h2>
                     <div className="status__img-wrapper">
-                        <AccountCircleIcon className="status__img-avatar" />
+                        {AvatarMemo}
                     </div>
                     <div className="status__input" onDragOver={dragOverHandler}>
                         <textarea
