@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import InputEdit from '../../components/InputEdit';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import Navigation from '../../Modules/Navigation';
-import { UserProc, update, fetch as fetchUser } from '../../store/user/userSlice';
+import { UserProc, update, fetch as fetchUser, uploadImg } from '../../store/user/userSlice';
 import './Profile.scss';
 import LogoutIcon from '@mui/icons-material/Logout';
 import IconButton from '@mui/material/IconButton';
@@ -78,7 +78,25 @@ const Profile = () => {
       setIsOpenUrl(false)
     }
 
-    const AvatarMemo = useMemo(() => <Avatar alt="avatar" src={''} sx={{ width: 120, height: 120 }} />, [])
+    const handleFileChange = async (e: any) => {
+        const imgData: any = await dispatch(uploadImg(e.target.files[0]))
+
+        const payload: UserProc = {
+            ...user,
+			imgUrl: imgData.payload.filePath,
+		} as UserProc;
+
+        dispatch(update(payload));
+	}
+
+    const AvatarMemo = useMemo(() => {
+        return(
+            <>
+                <Avatar alt="avatar" src={`http://localhost:5000/${user?.imgUrl}`} sx={{ width: 120, height: 120, cursor: 'pointer' }} />
+                <input className="upload-input"  type="file" onChange={handleFileChange} />
+            </>
+        )
+    }, [user])
 
     return (
         <section className="profile">
