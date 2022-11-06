@@ -93,6 +93,23 @@
       "backgroundUrl": "/1667641097302-117684-arhitektura-muzyka-atmosfera-metropoliya-illustracia-1920x1080.jpg"
     }
   ],
+  "likes": [
+    {
+      "idUser": 2,
+      "idPost": 12,
+      "id": 2
+    },
+    {
+      "idUser": 2,
+      "idPost": 13,
+      "id": 3
+    },
+    {
+      "idUser": 1,
+      "idPost": 13,
+      "id": 4
+    }
+  ],
   "comments": [],
   "profile": {
     "name": "typicode"

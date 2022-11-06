@@ -39,10 +39,12 @@ export const fetchPosts = createAsyncThunk(
         const responsePosts = await axios.get('http://localhost:3001/posts');
         const responseUsers = await axios.get(`http://localhost:3001/users`);
 
+        //todo: тут будет запрос на получение лайков в посте (сначала получить все лайки, а потом посчитать количество в каждом конкретном)
+        
         const newProcessPosts = await responsePosts.data.map( (item: any) => {
 
             const findedUser: UserDto | undefined = responseUsers.data.find((user: UserDto) => user.id === item.idUser);
-    
+
             return {
                 ...item,
                 name: findedUser?.name ? findedUser.name : '',

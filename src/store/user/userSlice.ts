@@ -19,10 +19,16 @@ export interface UserDto {
     role?: Role;
     imgUrl?: string;
     backgroundUrl?: string;
-    lickedPosts?: number[];
 }
 
-export interface UserProc extends UserDto {}
+export interface LikesDto {
+    id: number;
+    idUser: number;
+    idPost: number;
+}
+export interface UserProc extends UserDto {
+    lickedPosts?: LikesDto[];
+}
 export interface UserData {
     isLoading: boolean;
     user: UserProc;
@@ -33,6 +39,11 @@ export interface UserData {
 export interface authData {
     login: string;
     password: string;
+}
+
+export interface PLike {
+    idUser: number;
+    idPost: number;
 }
 
 const initialState: UserData = {
@@ -50,8 +61,13 @@ export const fetch = createAsyncThunk(
     async (id: number) => {
         // Здесь только логика запроса и возврата данных
         // Никакой обработки ошибок
-        const response = await axios.get(`http://localhost:3001/users?id=${id}`);
-        return response.data;
+        const responseUser = await axios.get(`http://localhost:3001/users?id=${id}`);
+        const responseLikes = await axios.get(`http://localhost:3001/likes?idUser=${id}`)
+
+        responseUser.data[0].lickedPosts = responseLikes.data
+
+        console.log(responseUser.data)
+        return responseUser.data;
     }
 );
 
@@ -112,6 +128,22 @@ export const uploadImg = createAsyncThunk('user/uploadImg', async (file: Blob | 
         return {} as ImgDto
     }
 });
+
+export const addLike = createAsyncThunk(
+    'user/addLike',
+    async (value: PLike) => {
+        const response = await axios.post(`http://localhost:3001/likes`, value);
+        return response.data;
+    }
+);
+
+export const removeLike = createAsyncThunk(
+    'user/removeLike',
+    async (idLike?: number) => {
+        const response = await axios.delete(`http://localhost:3001/likes/${idLike}`);
+        return response.data;
+    }
+);
 
 export const UserSlice: any = createSlice({
     name: 'user',

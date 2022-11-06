@@ -8,12 +8,13 @@ import Box from '@mui/material/Box';
 import Aside from '../../Modules/Aside';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import {CustomPost, fetchPosts as fetch, post, PostStore, remove, update, uploadImg} from '../../store/post/postSlice';
-import { UserProc, fetch as fetchUser, Role } from '../../store/user/userSlice';
+import { UserProc, fetch as fetchUser, Role, addLike, PLike, removeLike } from '../../store/user/userSlice';
 import UploadIcon from '@mui/icons-material/Upload';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import Avatar from '@mui/material/Avatar';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import IconButton from '@mui/material/IconButton';
 
 
 
@@ -121,6 +122,24 @@ function Home() {
 		setDrag(true);
 	}
 
+    const handleLike = async(_: any, idPost: number) => {
+        const payload: PLike = {
+            idUser: user.id,
+            idPost: idPost
+        }
+
+        await dispatch(addLike(payload))
+        await dispatch(fetchUser(Number(sessionStorage.getItem('userId'))))
+    }
+
+    const handleDislike = async (_: any, idLike?: number) => {
+
+        await dispatch(removeLike(idLike))
+
+        await dispatch(fetchUser(Number(sessionStorage.getItem('userId'))))
+
+    }
+
 	const AvatarMemo = useMemo(() => {
         return(
             <>
@@ -176,7 +195,7 @@ function Home() {
                             return (
                                 <div key={post.id} className="home__posts-wrapper">
                                     <div className="home__posts-header">
-                                        <div className='home__posts-avatar-wrapper'>
+                                        <div className="home__posts-avatar-wrapper">
                                             <Avatar alt="avatar" src={`http://localhost:5000/${post?.avatarUrl}`} sx={{ width: 40, height: 40 }}>
                                                 {post.name}
                                             </Avatar>
@@ -202,7 +221,23 @@ function Home() {
                                         <p className="home__posts-body">{post.body}</p>
                                         {post?.imgUrl && <img className="home__posts-img" src={`http://localhost:5000/${post?.imgUrl}`} alt="" />}
                                     </div>
-									{user?.lickedPosts?.find((id) => id === post.id) ? <FavoriteIcon /> : <FavoriteBorderIcon /> }
+                                    {user?.lickedPosts?.find(item => item.idPost === post.id) ? (
+                                        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                                            <IconButton
+                                                aria-label="delete"
+                                                onClick={e => handleDislike(e, user?.lickedPosts?.find(item => item.idPost === post.id)?.id)}
+                                                color={'primary'}
+                                            >
+                                                <FavoriteIcon />
+                                            </IconButton>
+                                        </div>
+                                    ) : (
+                                        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                                            <IconButton aria-label="delete" onClick={e => handleLike(e, post.id)} color={'primary'}>
+                                                <FavoriteBorderIcon />
+                                            </IconButton>
+                                        </div>
+                                    )}
                                 </div>
                             );
                         })
