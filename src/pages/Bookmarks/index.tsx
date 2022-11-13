@@ -36,7 +36,7 @@ function Bookmarks() {
 
 	const options = useMemo(() =>[
 		'Удалить',
-	],[])
+	], [])
 
 
 	const handleClickDelete = useCallback((id: number | undefined) => {
