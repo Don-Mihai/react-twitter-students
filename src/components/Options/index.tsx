@@ -7,7 +7,8 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 interface Props {
     onClickEdit?: (event: any) => any;
-    onClickDelete: (event: any) => any;
+    onClickDelete?: (event: any) => any;
+    onAddBookmark?: (event: any) => any;
     options: string[];
     id: number;
 	className?: string;
@@ -15,7 +16,7 @@ interface Props {
 
 const ITEM_HEIGHT = 48;
 
-function Options({ onClickEdit, onClickDelete, options, id, className }: Props) {
+function Options({ onClickEdit, onClickDelete, onAddBookmark, options, id, className }: Props) {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
 
@@ -25,6 +26,9 @@ function Options({ onClickEdit, onClickDelete, options, id, className }: Props) 
         }
         if (index === 1) {
             onClickDelete && onClickDelete(id);
+        }
+        if (index === 2) {
+            onAddBookmark && onAddBookmark(id);
         }
     };
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {

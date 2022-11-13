@@ -7,14 +7,17 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import Aside from '../../Modules/Aside';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import {CustomPost, fetchPosts as fetch, post, PostStore, remove, update, uploadImg} from '../../store/post/postSlice';
-import { UserProc, fetch as fetchUser, Role, addLike, PLike, removeLike } from '../../store/user/userSlice';
+import {addLikeQuantity, CustomPost, fetchPosts as fetch, post, PostStore, reduceLikeQuantity, remove, update, uploadImg} from '../../store/post/postSlice';
+import { UserProc, fetch as fetchUser, Role } from '../../store/user/userSlice';
 import UploadIcon from '@mui/icons-material/Upload';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import Avatar from '@mui/material/Avatar';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import IconButton from '@mui/material/IconButton';
+import CircularValue from '../../components/CircularValue';
+import { addLike, PLike, removeLike } from '../../store/like/like';
+import {PBookmark, post as postBookmark} from '../../store/bookmarks/bookmarkSlice';
 
 
 
@@ -38,6 +41,7 @@ function Home() {
 	const options = useMemo(() =>[
 		'Редактировать',
 		'Удалить',
+        'Добавить в закладки',
 	],[])
 
 
@@ -73,7 +77,8 @@ function Home() {
 	}, [])
 
 	const handlePostsChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-		setTextPost(event.target.value)
+        const slicedText = event.target.value.slice(0, 100)
+		setTextPost(slicedText)
 	}
 
 	const handleTwit = async () => {
@@ -130,16 +135,26 @@ function Home() {
 
         await dispatch(addLike(payload))
         await dispatch(fetchUser(Number(sessionStorage.getItem('userId'))))
+        dispatch(addLikeQuantity(idPost))
     }
 
-    const handleDislike = async (_: any, idLike?: number) => {
+    const handleDislike = async (_: any, idPost: number, idLike?: number ) => {
 
         await dispatch(removeLike(idLike))
 
         await dispatch(fetchUser(Number(sessionStorage.getItem('userId'))))
 
+        dispatch(reduceLikeQuantity(idPost))
     }
 
+    const handleAddBookmark = (idPost: number) => {
+        const payload: PBookmark = {
+            idUser: user.id,
+            idPost: idPost
+        }
+
+        dispatch(postBookmark(payload))
+    }
 	const AvatarMemo = useMemo(() => {
         return(
             <>
@@ -174,6 +189,7 @@ function Home() {
                                 <UploadIcon color="primary" />
                             </div>
                         )}
+                        <CircularValue value={textPost.length}></CircularValue>
                     </div>
                     {file && <div className="status__icon-container" onClick={() => setFile(null)}>
                         <AttachFileIcon color="primary" />
@@ -211,6 +227,7 @@ function Home() {
                                                 options={options}
                                                 id={post.id}
                                                 onClickDelete={handleClickDelete}
+                                                onAddBookmark={handleAddBookmark}
                                             />
                                         ) : (
                                             ''
@@ -225,16 +242,18 @@ function Home() {
                                         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                                             <IconButton
                                                 aria-label="delete"
-                                                onClick={e => handleDislike(e, user?.lickedPosts?.find(item => item.idPost === post.id)?.id)}
+                                                onClick={e => handleDislike(e, post.id, user?.lickedPosts?.find(item => item.idPost === post.id)?.id)}
                                                 color={'primary'}
                                             >
                                                 <FavoriteIcon />
+                                                {post.likesQuantity}
                                             </IconButton>
                                         </div>
                                     ) : (
                                         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                                             <IconButton aria-label="delete" onClick={e => handleLike(e, post.id)} color={'primary'}>
                                                 <FavoriteBorderIcon />
+                                                {post.likesQuantity}
                                             </IconButton>
                                         </div>
                                     )}

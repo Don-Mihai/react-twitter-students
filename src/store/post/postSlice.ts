@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { LikesDto } from '../like/like';
 import { UserDto} from '../user/userSlice'
 
 export interface CustomPostDto {
@@ -13,6 +14,7 @@ export interface CustomPost extends CustomPostDto {
     name: string;
     login: string;
     avatarUrl: string;
+    likesQuantity: number;
 }
 
 export interface PostStore {
@@ -38,18 +40,23 @@ export const fetchPosts = createAsyncThunk(
         
         const responsePosts = await axios.get('http://localhost:3001/posts');
         const responseUsers = await axios.get(`http://localhost:3001/users`);
+        const responseLikes = await axios.get(`http://localhost:3001/likes`)
 
         //todo: тут будет запрос на получение лайков в посте (сначала получить все лайки, а потом посчитать количество в каждом конкретном)
         
-        const newProcessPosts = await responsePosts.data.map( (item: any) => {
+        const newProcessPosts = await responsePosts.data.map( (post: any) => {
 
-            const findedUser: UserDto | undefined = responseUsers.data.find((user: UserDto) => user.id === item.idUser);
+            const findedUser: UserDto | undefined = responseUsers.data.find((user: UserDto) => user.id === post.idUser);
+
+            const likesFiltered: LikesDto[] = responseLikes.data.filter((like: any) => like.idPost === post.id)
+
 
             return {
-                ...item,
+                ...post,
                 name: findedUser?.name ? findedUser.name : '',
                 login: findedUser?.login ? findedUser.login : '',
                 avatarUrl: findedUser?.imgUrl ? findedUser.imgUrl : '',
+                likesQuantity: likesFiltered.length,
             } as CustomPost
         })
 
@@ -103,8 +110,6 @@ export const uploadImg = createAsyncThunk('posts/uploadImg', async (file: Blob |
     if (file) {
         formData.append('file', file);
 
-        console.log(formData);
-
         const data = await axios.post('http://localhost:5000/upload-img', formData);
         return data.data as ImgDto
     } else {
@@ -115,7 +120,34 @@ export const uploadImg = createAsyncThunk('posts/uploadImg', async (file: Blob |
 export const postSlice: any = createSlice({
     name: 'post',
     initialState,
-    reducers: {},
+    reducers: {
+        addLikeQuantity: (state, action) => {
+            const idPost = action.payload;
+
+            const newPosts = state.processPosts.map(post => {
+                if (post.id === idPost) {
+                    return { ...post, likesQuantity: ++post.likesQuantity };
+                } else {
+                    return post;
+                }
+            });
+
+            state.posts = newPosts;
+        },
+        reduceLikeQuantity: (state, action) => {
+            const idPost = action.payload;
+
+            const newPosts = state.processPosts.map(post => {
+                if (post.id === idPost) {
+                    return { ...post, likesQuantity: --post.likesQuantity };
+                } else {
+                    return post;
+                }
+            });
+
+            state.posts = newPosts;
+        },
+    },
     extraReducers(builder) {
         // addCase тут как в качестве then
         // fullfield это успешное выполнение
@@ -138,11 +170,11 @@ export const postSlice: any = createSlice({
             })
             .addCase(fetchByUser.pending, state => {
                 state.isLoading = true;
-            })
+            });
     },
 });
 
 // Action creators are generated for each case reducer function
-export const {} = postSlice.actions;
+export const {addLikeQuantity, reduceLikeQuantity} = postSlice.actions;
 
 export default postSlice.reducer;

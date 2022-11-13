@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { LikesDto } from '../like/like';
 import { ImgDto } from '../post/postSlice';
 
 export const enum Role {
@@ -21,11 +22,6 @@ export interface UserDto {
     backgroundUrl?: string;
 }
 
-export interface LikesDto {
-    id: number;
-    idUser: number;
-    idPost: number;
-}
 export interface UserProc extends UserDto {
     lickedPosts?: LikesDto[];
 }
@@ -39,11 +35,6 @@ export interface UserData {
 export interface authData {
     login: string;
     password: string;
-}
-
-export interface PLike {
-    idUser: number;
-    idPost: number;
 }
 
 const initialState: UserData = {
@@ -66,7 +57,6 @@ export const fetch = createAsyncThunk(
 
         responseUser.data[0].lickedPosts = responseLikes.data
 
-        console.log(responseUser.data)
         return responseUser.data;
     }
 );
@@ -120,30 +110,12 @@ export const uploadImg = createAsyncThunk('user/uploadImg', async (file: Blob | 
     if (file) {
         formData.append('file', file);
 
-        console.log(formData);
-
         const data = await axios.post('http://localhost:5000/upload-img', formData);
         return data.data as ImgDto
     } else {
         return {} as ImgDto
     }
 });
-
-export const addLike = createAsyncThunk(
-    'user/addLike',
-    async (value: PLike) => {
-        const response = await axios.post(`http://localhost:3001/likes`, value);
-        return response.data;
-    }
-);
-
-export const removeLike = createAsyncThunk(
-    'user/removeLike',
-    async (idLike?: number) => {
-        const response = await axios.delete(`http://localhost:3001/likes/${idLike}`);
-        return response.data;
-    }
-);
 
 export const UserSlice: any = createSlice({
     name: 'user',

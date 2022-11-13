@@ -95,22 +95,38 @@
   ],
   "likes": [
     {
-      "idUser": 2,
-      "idPost": 12,
-      "id": 2
-    },
-    {
-      "idUser": 2,
-      "idPost": 13,
-      "id": 3
-    },
-    {
       "idUser": 1,
       "idPost": 13,
       "id": 4
+    },
+    {
+      "idUser": 1,
+      "idPost": 10,
+      "id": 5
+    },
+    {
+      "idUser": 2,
+      "idPost": 11,
+      "id": 7
+    },
+    {
+      "idUser": 2,
+      "idPost": 12,
+      "id": 9
+    },
+    {
+      "idUser": 2,
+      "idPost": 13,
+      "id": 10
     }
   ],
-  "comments": [],
+  "bookmarks": [
+    {
+      "idUser": 2,
+      "idPost": 13,
+      "id": 1
+    }
+  ],
   "profile": {
     "name": "typicode"
   }
