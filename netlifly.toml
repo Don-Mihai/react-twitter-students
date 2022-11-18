@@ -1,6 +1,0 @@
-[build]
-    command = "CI= npm run build"
-    command = "npm run json"
-    command = "node server/app.js"
-    publish = "/dist"
-    base = "/"

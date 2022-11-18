@@ -2,6 +2,17 @@ const express = require('express');
 const fileUpload = require('express-fileupload');
 const cors=require("cors");
 
+// 
+const jsonServer = require("json-server");
+const server = jsonServer.create();
+const router = jsonServer.router("./db.json");
+const middlewares = jsonServer.defaults({
+  static: "./build",
+});
+
+server.use(middlewares);
+server.use(router);
+// 
 
 const app = express();
 
