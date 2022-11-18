@@ -1,0 +1,6 @@
+[build]
+    command = "npm run build"
+    command = "npm run json"
+    command = "node server/app.js"
+    publish = "/dist"
+    base = "/"
