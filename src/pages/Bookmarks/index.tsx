@@ -151,8 +151,6 @@ function Bookmarks() {
                         })
                         .reverse()
                 )}
-
-                {newsPosts}
             </section>
             <Aside handleChange={handleChange} searchText={searchText} />
         </section>
