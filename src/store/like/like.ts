@@ -13,7 +13,7 @@ export interface PLike {
     idPost: number;
 }
 
-interface LikeData {
+export interface LikeData {
     isLoading: boolean;
     likes: LikesDto[];
 }

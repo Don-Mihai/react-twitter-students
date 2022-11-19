@@ -150,7 +150,8 @@ function Home() {
     const handleAddBookmark = (idPost: number) => {
         const payload: PBookmark = {
             idUser: user.id,
-            idPost: idPost
+            idPost: idPost,
+            time: new Date(),
         }
 
         dispatch(postBookmark(payload))

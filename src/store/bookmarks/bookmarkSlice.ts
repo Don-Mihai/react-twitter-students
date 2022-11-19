@@ -11,6 +11,7 @@ export interface BookmarksDto {
 export interface PBookmark {
     idUser: number;
     idPost: number;
+    time: Date;
 }
 
 export interface BookmarksData {
@@ -22,6 +23,17 @@ const initialState: BookmarksData = {
     isLoading: false,
     bookmarks: [],
 };
+
+// 1) создание сущности закладки
+// 2) кто создал, какой пост добавили в закладки? => idUser, idPost
+// 3) написать запрос который создаст новую сущность
+    // 1) описать интерфейс данных которые мы добавим (idUser, idPost)
+    // 2) отправляем данные на сервер (передем их в payload)
+
+
+
+
+// 4) получение всех сущностей (в network)
 
 export const fetchBookmarks = createAsyncThunk(
     'bookmarks/fetchUsers', // просто айдишнки, тоесть пишем любое название, но семантичное
@@ -69,6 +81,7 @@ export const BookmarkSlice: any = createSlice({
     extraReducers(builder) {
         builder
         .addCase(fetchBookmarks.fulfilled, (state, action) => {
+            // сохранение данных в редакс
             state.bookmarks = action.payload;
             state.isLoading = false;
         })

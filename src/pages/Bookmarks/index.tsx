@@ -21,7 +21,16 @@ function Bookmarks() {
 	const [searchText, setSearchText] = useState('');
 	const posts: PostStore = useAppSelector((store: any) => store.post)
 	const user: UserProc = useAppSelector((store: any) => store.user.user)
-    const bookmarks: BookmarksData = useAppSelector((store: any) => store.bookmark)
+    // всегда консолим данные
+    const bookmarks: BookmarksData = useAppSelector((store: any) => store.bookmarks)
+    
+
+    // 1) находим при клике на какую кнопку срабатывает запрос
+    // 2) создали для кнопки handle, внутри вызываем запрос, предварительно получив
+    // 3) проверяем если запрос сработал
+
+
+    // 
 
 	const dispatch = useAppDispatch()
 
@@ -79,6 +88,7 @@ function Bookmarks() {
                 ) : (
                     posts.processPosts
                         .filter((item)=>{
+                            
                             const idPosts =  bookmarks?.bookmarks?.map(bookmark => bookmark.idPost)
                             
                             if(idPosts?.includes(item.id)) {
@@ -141,6 +151,8 @@ function Bookmarks() {
                         })
                         .reverse()
                 )}
+
+                {newsPosts}
             </section>
             <Aside handleChange={handleChange} searchText={searchText} />
         </section>

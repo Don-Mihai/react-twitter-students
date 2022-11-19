@@ -43,6 +43,13 @@ const Navigation = () => {
               </div>
           )}
 
+          {!user?.role && (
+              <div className="nav-list__link">
+                  <BookmarksIcon />
+                  <NavLink url={'/likes-posts'} text={'Понравившиеся посты'} />
+              </div>
+          )}
+
           <div className="nav-list__link">
               <PersonOutlineIcon />
               <NavLink url={'/profile'} text={'Профиль'} />
