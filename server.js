@@ -58,6 +58,10 @@ app.post('/upload-img', (req, res) => {
     });
 });
 
+app.get("/*", function (req, res) {
+    res.sendFile(path.resolve(__dirname, '../build', 'index.html'));
+})
+
 app.listen(process.env.PORT || 5000, function () {
     console.log('Сервер ожидает подключения...');
 });
