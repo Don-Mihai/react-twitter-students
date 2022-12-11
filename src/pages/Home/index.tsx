@@ -90,6 +90,7 @@ function Home() {
 			body: textPost,
 			idUser: user.id,
 			imgUrl: imgData.payload.filePath,
+            createTime: new Date().toLocaleString(),
 		} as CustomPost;
 
 
@@ -151,7 +152,6 @@ function Home() {
         const payload: PBookmark = {
             idUser: user.id,
             idPost: idPost,
-            time: new Date(),
         }
 
         dispatch(postBookmark(payload))
@@ -166,7 +166,7 @@ function Home() {
 
 	return (
         <section className="home">
-            <Navigation />
+            <Navigation  />
             <section className="home__posts">
                 <section className="status">
                     <h2 className="status-title">Главная</h2>
@@ -217,7 +217,9 @@ function Home() {
                                                 {post.name}
                                             </Avatar>
                                             <h3 className="home__posts-title">
-                                                {post.name} {post.login}
+                                                <>
+                                                    {post.name} {post.login} <span className='home__create-time'>{post?.createTime}</span> 
+                                                </>
                                             </h3>
                                         </div>
 

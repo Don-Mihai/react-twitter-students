@@ -1,68 +1,12 @@
 {
   "posts": [
     {
-      "body": "111111",
+      "body": "qqq",
       "idUser": 1,
+      "createTime": "20.11.2022, 11:58:46",
       "id": 1
-    },
-    {
-      "body": "32423423",
-      "idUser": 1,
-      "id": 2
-    },
-    {
-      "body": "121212",
-      "idUser": 1,
-      "id": 3
-    },
-    {
-      "body": "qwerty",
-      "idUser": 2,
-      "img": {},
-      "id": 6
-    },
-    {
-      "body": "qqqqqqqq",
-      "idUser": 2,
-      "img": {},
-      "id": 7
-    },
-    {
-      "body": "111111111111",
-      "idUser": 2,
-      "imgUrl": "/1667122638426-by-isaac-yeram-kim-samurai-samurai-so-spiny-vorota-torii-pli.jpg",
-      "id": 8
-    },
-    {
-      "body": "qqqqq",
-      "idUser": 2,
-      "id": 9
-    },
-    {
-      "body": "eeee",
-      "idUser": 2,
-      "id": 10
-    },
-    {
-      "body": "tt",
-      "idUser": 2,
-      "imgUrl": "/1667123191209-117684-arhitektura-muzyka-atmosfera-metropoliya-illustracia-1920x1080.jpg",
-      "id": 11
-    },
-    {
-      "body": "yyy",
-      "idUser": 2,
-      "imgUrl": "/1667123199344-by-isaac-yeram-kim-samurai-samurai-so-spiny-vorota-torii-pli.jpg",
-      "id": 12
-    },
-    {
-      "body": "test",
-      "idUser": 2,
-      "imgUrl": "/1667126178679-by-isaac-yeram-kim-samurai-samurai-so-spiny-vorota-torii-pli.jpg",
-      "id": 13
     }
   ],
-
   "users": [
     {
       "name": "Тирион",
@@ -76,8 +20,20 @@
       "role": "ADMIN",
       "id": 1,
       "userBackground": "https://wallpaperaccess.com/full/16677.jpg",
-      "imgUrl": "/1667641623144-300px-Samurai_with_sword.jpg",
-      "backgroundUrl": "/1667641634536-028.jpg"
+      "imgUrl": "/1668934793148-300px-Samurai_with_sword.jpg",
+      "backgroundUrl": "/1668934715818-300px-Samurai_with_sword.jpg",
+      "lickedPosts": [
+        {
+          "idUser": 1,
+          "idPost": 13,
+          "id": 4
+        },
+        {
+          "idUser": 1,
+          "idPost": 10,
+          "id": 5
+        }
+      ]
     },
     {
       "name": "Дионнv",
@@ -119,6 +75,11 @@
       "idUser": 2,
       "idPost": 13,
       "id": 10
+    },
+    {
+      "idUser": 1,
+      "idPost": 1,
+      "id": 11
     }
   ],
   "bookmarks": [

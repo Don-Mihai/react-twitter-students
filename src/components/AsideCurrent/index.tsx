@@ -1,24 +1,32 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import AsideTopic from '../AsideTopic';
 import './AsideCurrent.scss';
+import { fetch as fetchUser, UserData, fetchUsers as fetch } from '../../store/user/userSlice';
 
 function AsideCurrent() {
+  const user: UserData = useAppSelector((store: any) => store.user)
+
+	const dispatch = useAppDispatch()
+
+	useEffect(() => {
+		dispatch(fetchUser(Number(sessionStorage.getItem('userId'))))
+		fetchUsers()
+	}, [])
+
+	const fetchUsers = () => {
+		dispatch(fetch())
+	}
+
   return (
     <div className="home-aside__current">
       <h2 className="home-aside__current-title">
-        Актуальные темы для вас
+        Топ пользователей
       </h2>
       <div className="home-aside__current-wrapper">
-        <AsideTopic title={'Спорт - Актуально'} signature={'#Viaplay'} twit={'Твитов: 10,3 тыс.'}/>
-        <AsideTopic title={'Спорт - Актуально'} signature={'#Viaplay'} twit={'Твитов: 10,3 тыс.'}/>
-        <AsideTopic title={'Программирование - Актуально'} signature={'#FrontEndBoy'} twit={'Твитов: 96,1 тыс.'}/>
-        <AsideTopic title={'Программирование - Актуально'} signature={'#FrontEndBoy'} twit={'Твитов: 96,1 тыс.'}/>
-        <AsideTopic title={'Программирование - Актуально'} signature={'#FrontEndBoy'} twit={'Твитов: 96,1 тыс.'}/>
-        <AsideTopic title={'Программирование - Актуально'} signature={'#FrontEndBoy'} twit={'Твитов: 96,1 тыс.'}/>
-        <AsideTopic title={'Программирование - Актуально'} signature={'#FrontEndBoy'} twit={'Твитов: 96,1 тыс.'}/>
-        <AsideTopic title={'Программирование - Актуально'} signature={'#FrontEndBoy'} twit={'Твитов: 96,1 тыс.'}/>
-        <AsideTopic title={'Программирование - Актуально'} signature={'#FrontEndBoy'} twit={'Твитов: 96,1 тыс.'}/>
-        <AsideTopic title={'Программирование - Актуально'} signature={'#FrontEndBoy'} twit={'Твитов: 96,1 тыс.'}/>
+        {user.users.map(user => {
+          return <AsideTopic title={user.login} signature={user.name} imgUrl={user.imgUrl || ''}></AsideTopic>
+        })}
       </div>
     </div>
   );

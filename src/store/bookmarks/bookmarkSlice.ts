@@ -11,7 +11,6 @@ export interface BookmarksDto {
 export interface PBookmark {
     idUser: number;
     idPost: number;
-    time: Date;
 }
 
 export interface BookmarksData {

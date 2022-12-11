@@ -13,6 +13,8 @@ import { useAppSelector } from "../../hooks/hooks";
 
 const Navigation = () => {
   const user: UserProc = useAppSelector((store: any) => store.user.user)
+  const [activeItem] 
+
   return (
       <nav className="modules-navigation">
           <Link to="/home">

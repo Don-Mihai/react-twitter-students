@@ -8,6 +8,7 @@ export interface CustomPostDto {
 	idUser: number;
 	body: string;
     imgUrl: string;
+    createTime: string;
 }
 
 export interface CustomPost extends CustomPostDto {
